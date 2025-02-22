@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 project(open_cli VERSION 0.1.0 LANGUAGES C CXX)
 
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED)
+
+# Install CLI11
 include(FetchContent)
 FetchContent_Declare(
     cli11_proj
