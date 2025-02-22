@@ -1,0 +1,61 @@
+# Build directories
+/build/
+/CMakeFiles/
+/cmake-build-debug/
+/out/
+/bin/
+/obj/
+
+# CMake generated files
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+*.cmake
+
+# Executables & libraries
+*.exe
+*.out
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+
+# Logs & temp files
+*.log
+*.tmp
+*.swp
+*.bak
+*.~*
+
+# Compiled object files
+*.o
+*.obj
+*.pch
+*.pdb
+
+# VS Code settings
+.vscode/
+launch.json
+tasks.json
+
+# CLion settings
+.idea/
+*.iml
+
+# Windows specific
+Thumbs.db
+Desktop.ini
+
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+CMakeUserPresets.json
