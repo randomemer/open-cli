@@ -10,8 +10,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cli11_proj)
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
 
-add_executable(open_cli src/main.cpp)
+file(GLOB COMMANDS "src/commands/*.cpp")
+add_executable(open_cli
+    src/main.cpp
+    src/cli.cpp
+    ${COMMANDS}
+)
+
+target_include_directories(open_cli PRIVATE 
+    include
+    include/commands
+)
 
 target_link_libraries(open_cli PRIVATE CLI11::CLI11)
