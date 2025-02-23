@@ -1,4 +1,5 @@
 #include "cli.h"
+#include "util.h"
 #include <CLI/CLI.hpp>
 #include <iostream>
 #include <stdexcept>

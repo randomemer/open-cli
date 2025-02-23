@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(open_cli VERSION 0.1.0 LANGUAGES C CXX)
+project(open VERSION 1.0.0 LANGUAGES C CXX)
 
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -26,18 +26,18 @@ FetchContent_MakeAvailable(json)
 FetchContent_MakeAvailable(tabulate)
 
 file(GLOB COMMANDS "src/commands/*.cpp")
-add_executable(open_cli
+add_executable(open
     src/main.cpp
     src/cli.cpp
     src/util.cpp
     ${COMMANDS}
 )
 
-target_include_directories(open_cli PRIVATE 
+target_include_directories(open PRIVATE 
     include
     include/commands
 )
 
-target_link_libraries(open_cli PRIVATE CLI11::CLI11)
-target_link_libraries(open_cli PRIVATE nlohmann_json::nlohmann_json)
-target_link_libraries(open_cli PRIVATE tabulate)
+target_link_libraries(open PRIVATE CLI11::CLI11)
+target_link_libraries(open PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(open PRIVATE tabulate)

@@ -17,17 +17,14 @@ void registerCreateCmd(CLI::App &app) {
 
   auto path = std::make_shared<std::string>();
   create->add_option("path", opt->path, "Path to the application executable")
-      ->required();
+      ->required()
+      ->check(CLI::ExistingFile);
 
   auto admin = std::make_shared<bool>(false);
   create->add_flag("-a,--admin", opt->admin,
                    "Runs the application with administrator priveliges");
 
   create->callback([opt]() {
-    std::cout << "Creating alias : " << opt->alias << std::endl;
-    std::cout << "Located at : " << opt->path << std::endl;
-
-    // Load config
     auto config = loadConfig();
 
     // Check if already present
@@ -41,6 +38,9 @@ void registerCreateCmd(CLI::App &app) {
     config["aliases"].push_back(alias_entry);
 
     saveConfig(config);
+
+    std::cout << "Created alias \"" << opt->alias << "\"" << std::endl;
+    std::cout << "Located at : " << opt->path << std::endl;
   });
 }
 

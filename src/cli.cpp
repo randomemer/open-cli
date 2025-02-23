@@ -12,7 +12,7 @@
 namespace OpenCli {
 CLI::App &getApp() {
   static CLI::App app(
-      "A command line utility to open applications with aliases.");
+      "A command line utility to open applications with aliases.", "1.0.0");
 
   auto alias = std::make_shared<std::string>();
   app.add_option("name", *alias, "Alias of the application to open");

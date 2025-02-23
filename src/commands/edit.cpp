@@ -20,9 +20,11 @@ void registerEditCmd(CLI::App &app) {
 
   auto alias_opt = edit_options->add_option("-n,--name", opt->alias,
                                             "Name of the new alias");
-  auto path_opt = edit_options->add_option("-p,--path", opt->path,
-                                           "Path to application executable");
-  auto admin_opt = edit_options->add_flag("-a,--admin", opt->admin,
+  auto path_opt =
+      edit_options
+          ->add_option("-p,--path", opt->path, "Path to application executable")
+          ->check(CLI::ExistingFile);
+  auto admin_opt = edit_options->add_flag("-a,--admin,!--no-admin", opt->admin,
                                           "If admin privileges required");
 
   edit_options->require_option(1, 0);
@@ -50,7 +52,17 @@ void registerEditCmd(CLI::App &app) {
     config["aliases"][index].merge_patch(new_entry);
     saveConfig(config);
 
-    // TODO: add success cout
+    std::cout << "Edited alias \"" << *old_alias << "\"";
+    if (alias_opt->count() > 0) {
+      std::cout << " -> \"" << opt->alias << "\"\n";
+    }
+    std::cout << "\n";
+    std::cout << "Path : " << config["aliases"][index]["path"] << "\n";
+    if (config["aliases"][index]["admin"]) {
+      std::cout << "Uses admin privileges\n";
+    }
+
+    std::cout << std::endl;
   });
 }
 

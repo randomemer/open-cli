@@ -28,7 +28,10 @@ std::filesystem::path getConfigPath() {
           SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, NULL, &path))) {
     std::filesystem::path result(path);
     CoTaskMemFree(path); // Free allocated memory
-    result.append("/open-cli/config.json");
+
+    result /= "open-cli";
+    result /= "config.json";
+
     return result;
   }
   return {};
