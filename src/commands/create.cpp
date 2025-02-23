@@ -11,7 +11,7 @@ namespace OpenCli {
 void registerCreateCmd(CLI::App &app) {
   auto create = app.add_subcommand("create", "Create a new alias");
 
-  auto opt = std::make_shared<CreateOptions>();
+  auto opt = std::make_shared<AliasEntry>();
   create->add_option("name", opt->alias, "Alias of the application")
       ->required();
 
@@ -33,7 +33,7 @@ void registerCreateCmd(CLI::App &app) {
     // Check if already present
     for (auto item : config["aliases"]) {
       if (item.at("alias") == opt->alias) {
-        throw std::invalid_argument("An alias entry with the same key exists!");
+        throw std::runtime_error("An alias entry with the same key exists!");
       }
     }
 
@@ -42,17 +42,6 @@ void registerCreateCmd(CLI::App &app) {
 
     saveConfig(config);
   });
-}
-
-void to_json(nlohmann::json &j, const CreateOptions &opt) {
-  j = nlohmann::json{
-      {"alias", opt.alias}, {"path", opt.path}, {"admin", opt.admin}};
-}
-
-void from_json(const nlohmann::json &j, CreateOptions &opt) {
-  j.at("alias").get_to(opt.alias);
-  j.at("path").get_to(opt.path);
-  j.at("admin").get_to(opt.admin);
 }
 
 } // namespace OpenCli

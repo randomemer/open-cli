@@ -4,9 +4,21 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <shlobj.h>
+#include <stdexcept>
 #include <windows.h>
 
 namespace OpenCli {
+
+void to_json(nlohmann::json &j, const AliasEntry &opt) {
+  j = nlohmann::json{
+      {"alias", opt.alias}, {"path", opt.path}, {"admin", opt.admin}};
+}
+
+void from_json(const nlohmann::json &j, AliasEntry &opt) {
+  j.at("alias").get_to(opt.alias);
+  j.at("path").get_to(opt.path);
+  j.at("admin").get_to(opt.admin);
+}
 
 std::filesystem::path getConfigPath() {
   PWSTR path = nullptr;

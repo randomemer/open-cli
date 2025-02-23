@@ -1,5 +1,6 @@
 #include "cli.h"
 #include "create.h"
+#include "list.h"
 #include <CLI/CLI.hpp>
 #include <iostream>
 #include <memory>
@@ -28,6 +29,7 @@ CLI::App &getApp() {
 
   // Register sub commands
   registerCreateCmd(app);
+  registerListCmd(app);
 
   app.require_subcommand(0, 1);
 

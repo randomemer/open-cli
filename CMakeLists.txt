@@ -15,9 +15,15 @@ FetchContent_Declare(
     GIT_TAG v2.3.2
 )
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_Declare(
+    tabulate
+    GIT_REPOSITORY https://github.com/p-ranav/tabulate.git
+    GIT_TAG        v1.5
+)
 
 FetchContent_MakeAvailable(cli11_proj)
 FetchContent_MakeAvailable(json)
+FetchContent_MakeAvailable(tabulate)
 
 file(GLOB COMMANDS "src/commands/*.cpp")
 add_executable(open_cli
@@ -34,3 +40,4 @@ target_include_directories(open_cli PRIVATE
 
 target_link_libraries(open_cli PRIVATE CLI11::CLI11)
 target_link_libraries(open_cli PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(open_cli PRIVATE tabulate)
