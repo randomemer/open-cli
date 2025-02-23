@@ -49,6 +49,8 @@ void registerEditCmd(CLI::App &app) {
 
     config["aliases"][index].merge_patch(new_entry);
     saveConfig(config);
+
+    // TODO: add success cout
   });
 }
 

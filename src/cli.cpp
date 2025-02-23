@@ -1,5 +1,6 @@
 #include "cli.h"
 #include "create.h"
+#include "delete.h"
 #include "edit.h"
 #include "list.h"
 #include <CLI/CLI.hpp>
@@ -32,6 +33,7 @@ CLI::App &getApp() {
   registerCreateCmd(app);
   registerListCmd(app);
   registerEditCmd(app);
+  registerDeleteCmd(app);
 
   app.require_subcommand(0, 1);
 
