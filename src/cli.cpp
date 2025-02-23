@@ -3,6 +3,7 @@
 #include "delete.h"
 #include "edit.h"
 #include "list.h"
+#include "util.h"
 #include <CLI/CLI.hpp>
 #include <iostream>
 #include <memory>
@@ -16,18 +17,7 @@ CLI::App &getApp() {
   auto alias = std::make_shared<std::string>();
   app.add_option("name", *alias, "Alias of the application to open");
 
-  app.callback([alias]() {
-    if (!app.get_subcommands().empty()) {
-      return; // A subcommand was executed
-    }
-
-    if (!alias->empty()) {
-      std::cout << "Opening app: " << *alias << std::endl;
-    } else {
-      std::cerr << "Error: No alias provided.\n";
-      std::exit(1);
-    }
-  });
+  app.callback([alias]() { open_callback(app, alias); });
 
   // Register sub commands
   registerCreateCmd(app);
@@ -39,4 +29,37 @@ CLI::App &getApp() {
 
   return app;
 }
+
+void open_callback(CLI::App &app, std::shared_ptr<std::string> alias) {
+  if (!app.get_subcommands().empty()) {
+    return; // A subcommand was executed
+  }
+
+  if (alias->empty()) {
+    throw std::invalid_argument("No alias provided");
+  }
+
+  auto config = loadConfig();
+
+  int index = -1;
+
+  for (int i = 0; i < config["aliases"].size(); i++) {
+    if (config["aliases"][i]["alias"] == *alias) {
+      index = i;
+      break;
+    }
+  }
+
+  if (index == -1) {
+    throw std::invalid_argument("Provided alias doesn't exist!");
+  }
+
+  AliasEntry entry = config.at("aliases").at(index);
+
+  std::string cmd = "/c " + entry.path;
+  std::wstring ws = stringToWstring(cmd);
+
+  runCommandAsAdmin(ws.c_str(), entry.admin);
+}
+
 } // namespace OpenCli

@@ -1,10 +1,12 @@
 #include "util.h"
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <shlobj.h>
 #include <stdexcept>
+#include <string>
 #include <windows.h>
 
 namespace OpenCli {
@@ -62,6 +64,30 @@ void saveConfig(const nlohmann::json &config) {
   }
 
   file << config.dump(4);
+}
+
+void runCommandAsAdmin(const wchar_t *command, bool isAdmin) {
+  SHELLEXECUTEINFOW sei = {sizeof(sei)};
+  sei.lpVerb = isAdmin ? L"runas" : NULL;
+  sei.lpFile = L"cmd.exe";
+  sei.lpParameters = command;
+  sei.nShow = SW_HIDE;
+
+  if (!ShellExecuteExW(&sei)) {
+    DWORD error = GetLastError();
+    if (error == ERROR_CANCELLED) {
+      throw std::runtime_error("User declined elevation");
+    } else {
+      throw std::runtime_error("Failed to execute command. " + error);
+    }
+  }
+}
+
+std::wstring stringToWstring(const std::string &str) {
+  size_t len = str.size();
+  std::wstring wstr(len, L'\0');
+  mbstowcs(&wstr[0], str.c_str(), len);
+  return wstr;
 }
 
 } // namespace OpenCli

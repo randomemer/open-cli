@@ -22,6 +22,10 @@ nlohmann::json loadConfig();
 
 void saveConfig(const nlohmann::json &config);
 
+void runCommandAsAdmin(const wchar_t *command, bool isAdmin);
+
+std::wstring stringToWstring(const std::string &str);
+
 } // namespace OpenCli
 
 #endif
